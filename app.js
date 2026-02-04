@@ -82,7 +82,7 @@ const validateRegistration = (req, res, next) => {
     }
     
     if (password.length < 6) {
-        req.flash('error', 'Password should be at least 6 or more characters long');
+        req.flash('error', 'Password should be at least 6 or more characters in length');
         req.flash('formData', req.body);
         return res.redirect('/register');
     }
@@ -278,24 +278,23 @@ app.get('/updateProduct/:id',checkAuthenticated, checkAdmin, (req,res) => {
 
 app.post('/updateProduct/:id', upload.single('image'), (req, res) => {
     const productId = req.params.id;
-    // Extract product data from the request body
     const { name, quantity, price } = req.body;
-    let image  = req.body.currentImage; //retrieve current image filename
-    if (req.file) { //if new image is uploaded
-        image = req.file.filename; // set image to be new image filename
-    } 
 
-    const sql = 'UPDATE products SET productName = ? , quantity = ?, price = ?, image =? WHERE productId = ?';
-    // Insert the new product into the database
+    // Ensure we have the current image if no new file is uploaded
+    let image = req.body.currentImage; 
+    if (req.file) {
+        image = req.file.filename;
+    }
+
+    // Parameterized query ensures safe SQL
+    const sql = 'UPDATE products SET productName = ?, quantity = ?, price = ?, image = ? WHERE productId = ?';
+
     connection.query(sql, [name, quantity, price, image, productId], (error, results) => {
         if (error) {
-            // Handle any error that occurs during the database operation
             console.error("Error updating product:", error);
-            res.status(500).send('Error updating product');
-        } else {
-            // Send a success response
-            res.redirect('/inventory');
+            return res.status(500).send('Error updating product');
         }
+        res.redirect('/inventory');
     });
 });
 

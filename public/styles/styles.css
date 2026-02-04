@@ -487,4 +487,32 @@ h2, .page-title {
   color: #fff;
 }
 
+/* === Buttons inside custom container === */
+.custom-container .btn {
+  display: inline-flex;          /* ensures proper alignment */
+  align-items: center;           /* vertical centering */
+  justify-content: center;       /* horizontal centering */
+  padding: 10px 18px;            /* same padding for both buttons */
+  margin-top: 15px;
+  margin-right: 10px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 16px;               /* explicit font size for consistency */
+  line-height: 1.4;              /* consistent text spacing */
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  min-height: 42px;              /* ensures equal height */
+  background-color: #7ec8e3;     /* pastel blue */
+  color: #fff;
+  border: none;
+  box-sizing: border-box;
+  appearance: none;              /* remove browser default button style */
+  transition: background 0.3s, transform 0.2s;
+}
+
+.custom-container .btn:hover {
+  background-color: #66b3d6;     /* slightly darker blue on hover */
+  transform: translateY(-1px);
+}
 
